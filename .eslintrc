@@ -1,0 +1,23 @@
+{
+    "extends": "airbnb",
+    "rules": {
+      "max-len": [
+        "error",
+        150,
+        2,
+        {
+          "ignoreUrls": true,
+          "ignoreComments": true,
+          "ignoreRegExpLiterals": true,
+          "ignoreStrings": true,
+          "ignoreTemplateLiterals": true
+        }
+      ],
+      "no-underscore-dangle": [
+        "error",
+        {
+          "allowAfterThis": true
+        }
+      ]
+    }
+  }

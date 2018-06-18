@@ -1,0 +1,11 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:9.6.8-alpine
+    container_name: tropos-lanston
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: supersecret
+      POSTGRES_DB: tropos
