@@ -98,8 +98,8 @@ describe('Postgres', () => {
     it('should perform a transaction successfully', async () => {
       await Users.delete();
       const { user, email } = await Postgres.transaction(async (transaction) => {
-        const u = await Users.insert({ first_name: 'alois', last_name: 'barreras' }, { transaction }).then(rows => rows[0]);
-        const e = await Emails.insert({ user_id: u.id, email: 'alois@troposhq.com' }, { transaction }).then(rows => rows[0]);
+        const u = await Users.insert({ first_name: 'alois', last_name: 'barreras' }, { returning: '*', transaction }).then(rows => rows[0]);
+        const e = await Emails.insert({ user_id: u.id, email: 'alois@troposhq.com' }, { returning: '*', transaction }).then(rows => rows[0]);
         return { user: u, email: e };
       });
 
@@ -112,7 +112,7 @@ describe('Postgres', () => {
     it('should rollback a transaction on failure', async () => {
       await Users.delete();
       await Postgres.transaction(async (transaction) => {
-        const u = await Users.insert({ first_name: 'alois', last_name: 'barreras' }, { transaction }).then(rows => rows[0]);
+        const u = await Users.insert({ first_name: 'alois', last_name: 'barreras' }, { returning: '*', transaction }).then(rows => rows[0]);
         await Emails.insert({ user_id: u.id, email: 'alois@troposhq.com' }, { transaction }).then(rows => rows[0]);
         throw new Error();
       }).catch(() => { });
