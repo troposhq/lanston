@@ -1,6 +1,6 @@
 {
   "name": "@tropos/lanston",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Library that provides some methods for performing common operations in Postgres.",
   "main": "lib/index.js",
   "scripts": {
