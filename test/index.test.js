@@ -150,5 +150,18 @@ describe('Postgres', () => {
       assert.equal(actualUsers.length, 0);
       assert.equal(actualEmails.length, 0);
     });
+
+    it('should rollback a transaction when calling rollback', async () => {
+      await Postgres.transaction(async (transaction, rollback) => {
+        const u = await transaction.query('insert into tropos.users (first_name, last_name) values ($1, $2) returning *', ['alois', 'barreras']).then(x => x.rows[0]);
+        await transaction.query('insert into tropos.emails (user_id, email) values ($1, $2) returning *', [u.id, 'alois@troposhq.com']).then(x => x.rows[0]);
+        await rollback();
+      });
+
+      const actualUsers = await Postgres.query('select * from tropos.users').then(x => x.rows);
+      const actualEmails = await Postgres.query('select * from tropos.emails').then(x => x.rows);
+      assert.equal(actualUsers.length, 0);
+      assert.equal(actualEmails.length, 0);
+    });
   });
 });
